@@ -1,14 +1,22 @@
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useEffect, useState } from 'react';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 const TideChart = () => {
   const [data, setData] = useState<any[]>([]);
+  const [showTomorrow, setShowTomorrow] = useState(false);
 
   useEffect(() => {
     // Point Jefferson Station ID: 9445958 (Reliable harmonic predictions for Indianola area)
     const fetchTides = async () => {
       try {
-        const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=9445958&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&format=json`;
+        const dateStr = showTomorrow ? 'tomorrow' : 'today';
+        const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=${dateStr}&station=9445958&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&format=json`;
         const res = await fetch(url);
         const json = await res.json();
         if (json.error) throw new Error(json.error.message);
@@ -22,12 +30,28 @@ const TideChart = () => {
       }
     };
     fetchTides();
-  }, []);
+  }, [showTomorrow]);
 
   return (
-    <div className="h-full w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data}>
+    <div className="h-full w-full space-y-4">
+      <div className="flex items-center gap-2 bg-maritime-950/30 p-1 rounded-lg border border-slate-800/40 w-fit">
+        <button 
+          onClick={() => setShowTomorrow(false)}
+          className={cn("px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all", !showTomorrow ? "bg-cyan text-maritime-950" : "text-slate-500 hover:text-slate-300")}
+        >
+          Today
+        </button>
+        <button 
+          onClick={() => setShowTomorrow(true)}
+          className={cn("px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all", showTomorrow ? "bg-cyan text-maritime-950" : "text-slate-500 hover:text-slate-300")}
+        >
+          Tomorrow
+        </button>
+      </div>
+      
+      <div className="h-32 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data}>
           <defs>
             <linearGradient id="colorV" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#00f2ff" stopOpacity={0.3}/>
@@ -57,6 +81,7 @@ const TideChart = () => {
         </AreaChart>
       </ResponsiveContainer>
     </div>
+  </div>
   );
 };
 

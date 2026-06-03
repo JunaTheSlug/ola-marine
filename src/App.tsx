@@ -6,10 +6,10 @@ import RightSidebar from './components/RightSidebar';
 import { X, Info } from 'lucide-react';
 
 // Wrap AISMap to include the selection overlay and right sidebar
-const MapView = ({ selectedVessel, setSelectedVessel }: any) => (
-  <>
+const MapView = ({ selectedVessel, setSelectedVessel, activeCard, setActiveCard }: any) => (
+  <div className="w-full h-full relative">
     <AISMap onSelectVessel={setSelectedVessel} />
-    <RightSidebar />
+    <RightSidebar activeCard={activeCard} setActiveCard={setActiveCard} />
     
     {selectedVessel && (
       <div className="fixed right-6 top-[550px] w-96 bg-maritime-900/95 backdrop-blur-xl border border-cyan/30 rounded-2xl p-6 shadow-[0_0_50px_rgba(0,242,255,0.15)] z-[2000] animate-in slide-in-from-right">
@@ -47,37 +47,36 @@ const MapView = ({ selectedVessel, setSelectedVessel }: any) => (
         </button>
       </div>
     )}
-  </>
+  </div>
 );
 
 export default function App() {
   const [selectedVessel, setSelectedVessel] = useState<any>(null);
+  const [activeCard, setActiveCard] = useState<string | null>('weather');
+
+  const toggleCard = (card: string) => {
+    setActiveCard(prev => prev === card ? null : card);
+  };
 
   return (
     <Router>
       <div className="relative w-full h-screen bg-maritime-950 overflow-hidden font-sans text-slate-200">
-        <Sidebar />
+        <Sidebar onToggleCard={toggleCard} activeCard={activeCard} />
         
-        <main className="w-full h-full flex">
+        <main className="absolute inset-0 w-full h-full z-0">
           <Routes>
-            <Route path="/" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} />} />
-            {/* Fallbacks */}
-            <Route path="*" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} />} />
+            <Route path="/" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} activeCard={activeCard} setActiveCard={setActiveCard} />} />
+            <Route path="*" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} activeCard={activeCard} setActiveCard={setActiveCard} />} />
           </Routes>
         </main>
 
-        {/* Global Map Layer Controls (only on map) */}
-        <Routes>
-          <Route path="/" element={
-            <div className="fixed left-[100px] bottom-6 bg-maritime-900/80 backdrop-blur-md border border-slate-800/40 p-1.5 rounded-xl flex gap-1 z-[1500]">
-              {['Standard', 'Satellite', 'Nautical'].map(layer => (
-                <button key={layer} className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${layer === 'Standard' ? 'bg-cyan text-maritime-950 shadow-[0_0_10px_rgba(0,242,255,0.4)]' : 'text-slate-500 hover:text-white'}`}>
-                  {layer}
-                </button>
-              ))}
-            </div>
-          } />
-        </Routes>
+        <div className="fixed left-24 bottom-6 bg-maritime-900/80 backdrop-blur-md border border-slate-800/40 p-1 rounded-xl flex gap-1 z-[1500]">
+          {['Standard', 'Satellite', 'Nautical'].map(layer => (
+            <button key={layer} className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${layer === 'Standard' ? 'bg-cyan text-maritime-950' : 'text-slate-500 hover:text-white'}`}>
+              {layer}
+            </button>
+          ))}
+        </div>
       </div>
     </Router>
   );

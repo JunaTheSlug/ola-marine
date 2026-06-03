@@ -1,6 +1,5 @@
-import { Anchor, Wind, Waves, Camera, Settings } from 'lucide-react';
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Anchor, Wind, Waves, Camera, Settings } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -8,16 +7,14 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const Sidebar = () => {
+const Sidebar = ({ onToggleCard, activeCard }: { onToggleCard: (id: string) => void, activeCard: string | null }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const menuItems = [
-    { icon: Wind, label: 'Weather', path: '/' },
-    { icon: Waves, label: 'Tides', path: '/' },
-    { icon: Camera, label: 'Webcam', path: '/' },
-    { icon: Settings, label: 'Settings', path: '/' },
+    { icon: Wind, label: 'Weather', id: 'weather' },
+    { icon: Waves, label: 'Tides', id: 'tides' },
+    { icon: Camera, label: 'Webcam', id: 'webcam' },
+    { icon: Settings, label: 'Settings', id: 'settings' },
   ];
 
   return (
@@ -36,18 +33,18 @@ const Sidebar = () => {
         {isExpanded && (
           <div className="animate-in fade-in duration-300">
             <h1 className="text-lg font-bold text-white tracking-tight whitespace-nowrap">Ola Marine</h1>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest whitespace-nowrap">Indianola, WA</p>
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest whitespace-nowrap">Command Center</p>
           </div>
         )}
       </div>
 
       <nav className="flex flex-col gap-y-3 w-full">
         {menuItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive = activeCard === item.id;
           return (
             <button
-              key={item.label}
-              onClick={() => navigate(item.path)}
+              key={item.id}
+              onClick={() => onToggleCard(item.id)}
               className={cn(
                 "flex items-center gap-4 rounded-xl transition-all duration-200 group relative",
                 isExpanded ? "p-3 px-4 w-full" : "p-3 justify-center",
