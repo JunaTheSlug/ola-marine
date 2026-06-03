@@ -20,11 +20,14 @@ const TideChart = () => {
         const res = await fetch(url);
         const json = await res.json();
         if (json.error) throw new Error(json.error.message);
-        const formatted = json.predictions.map((p: any) => ({
-          time: p.t.split(' ')[1],
-          v: parseFloat(p.v)
-        })).filter((_: any, i: number) => i % 4 === 0); // Decimate for UI
-        setData(formatted);
+        
+        if (json.predictions) {
+          const formatted = json.predictions.map((p: any) => ({
+            time: p.t.split(' ')[1],
+            v: parseFloat(p.v)
+          })).filter((_: any, i: number) => i % 4 === 0); // Decimate for UI
+          setData(formatted);
+        }
       } catch (e) {
         console.error('Tide fetch error:', e);
       }
@@ -33,55 +36,56 @@ const TideChart = () => {
   }, [showTomorrow]);
 
   return (
-    <div className="h-full w-full space-y-4">
-      <div className="flex items-center gap-2 bg-maritime-950/30 p-1 rounded-lg border border-slate-800/40 w-fit">
+    <div className="h-full w-full flex flex-col gap-4">
+      <div className="flex items-center gap-2 bg-maritime-950/30 p-1 rounded-lg border border-slate-800/40 w-fit pointer-events-auto">
         <button 
-          onClick={() => setShowTomorrow(false)}
-          className={cn("px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all", !showTomorrow ? "bg-cyan text-maritime-950" : "text-slate-500 hover:text-slate-300")}
+          onClick={(e) => { e.stopPropagation(); setShowTomorrow(false); }}
+          className={cn("px-3 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest transition-all", !showTomorrow ? "bg-cyan text-maritime-950" : "text-slate-500 hover:text-slate-300")}
         >
           Today
         </button>
         <button 
-          onClick={() => setShowTomorrow(true)}
-          className={cn("px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all", showTomorrow ? "bg-cyan text-maritime-950" : "text-slate-500 hover:text-slate-300")}
+          onClick={(e) => { e.stopPropagation(); setShowTomorrow(true); }}
+          className={cn("px-3 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest transition-all", showTomorrow ? "bg-cyan text-maritime-950" : "text-slate-500 hover:text-slate-300")}
         >
           Tomorrow
         </button>
       </div>
       
-      <div className="h-32 w-full">
+      <div className="flex-1 w-full min-h-[120px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
-          <defs>
-            <linearGradient id="colorV" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#00f2ff" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="#00f2ff" stopOpacity={0}/>
-            </linearGradient>
-          </defs>
-          <XAxis 
-            dataKey="time" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: '#64748b', fontSize: 10 }}
-            minTickGap={30}
-          />
-          <YAxis hide domain={['auto', 'auto']} />
-          <Tooltip 
-            contentStyle={{ backgroundColor: '#0c1929', borderColor: '#1e293b', borderRadius: '8px' }}
-            itemStyle={{ color: '#00f2ff', fontFamily: 'JetBrains Mono' }}
-          />
-          <Area 
-            type="monotone" 
-            dataKey="v" 
-            stroke="#00f2ff" 
-            fillOpacity={1} 
-            fill="url(#colorV)" 
-            strokeWidth={2}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+            <defs>
+              <linearGradient id="colorV" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#00f2ff" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#00f2ff" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <XAxis 
+              dataKey="time" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: '#64748b', fontSize: 9 }}
+              minTickGap={30}
+            />
+            <YAxis hide domain={['auto', 'auto']} />
+            <Tooltip 
+              contentStyle={{ backgroundColor: '#0c1929', borderColor: '#1e293b', borderRadius: '8px', fontSize: '10px' }}
+              itemStyle={{ color: '#00f2ff', fontFamily: 'JetBrains Mono' }}
+            />
+            <Area 
+              type="monotone" 
+              dataKey="v" 
+              stroke="#00f2ff" 
+              fillOpacity={1} 
+              fill="url(#colorV)" 
+              strokeWidth={2}
+              isAnimationActive={false}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
     </div>
-  </div>
   );
 };
 

@@ -12,12 +12,12 @@ const ExpandableCard = ({ title, icon: Icon, id, children, activeCard, onToggle 
 
   return (
     <div className={cn(
-      "bg-maritime-900/70 backdrop-blur-md border border-slate-800/40 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
-      isExpanded ? "ring-1 ring-cyan/20" : ""
+      "bg-maritime-900/80 backdrop-blur-lg border border-slate-800/40 rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] pointer-events-auto",
+      isExpanded ? "ring-1 ring-cyan/30 shadow-cyan/10" : ""
     )}>
       <button 
         onClick={() => onToggle(id)}
-        className="flex items-center justify-between p-4 hover:bg-slate-800/20 transition-colors w-full group"
+        className="flex items-center justify-between p-4 hover:bg-slate-800/30 transition-colors w-full group"
       >
         <div className="flex items-center gap-3">
           <Icon size={14} className={cn("transition-transform duration-300", isExpanded ? "text-cyan scale-110" : "text-slate-500 group-hover:text-slate-300")} />
@@ -40,10 +40,10 @@ const ExpandableCard = ({ title, icon: Icon, id, children, activeCard, onToggle 
 
 const RightSidebar = ({ activeCard, onToggleCard }: any) => {
   return (
-    <div className="fixed right-6 top-6 w-96 flex flex-col gap-4 pointer-events-none z-[1500]">
+    <div className="fixed top-4 right-4 left-4 md:left-auto md:w-96 flex flex-col gap-4 pointer-events-none z-[1500]">
       
       <ExpandableCard title="Tidal Forecast" icon={Waves} id="tides" activeCard={activeCard} onToggle={onToggleCard}>
-        <div className="h-40 pt-2">
+        <div className="h-44 pt-2">
           <div className="flex items-center justify-between mb-3">
             <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">MLLW Datum</span>
             <span className="text-[9px] font-mono text-cyan tracking-tighter uppercase">PT_JEFFERSON_WA</span>
