@@ -14,12 +14,10 @@ const Sidebar = () => {
   const location = useLocation();
 
   const menuItems = [
-    { icon: MapIcon, label: 'AIS Tracker', path: '/' },
-    { icon: Wind, label: 'Weather', path: '/weather' },
-    { icon: Waves, label: 'Tides', path: '/tides' },
-    { icon: Camera, label: 'Webcam', path: '/webcam' },
-    { icon: Activity, label: 'Health', path: '/health' },
-    { icon: Settings, label: 'Settings', path: '/settings' },
+    { icon: Wind, label: 'Weather', path: '/' },
+    { icon: Waves, label: 'Tides', path: '/' },
+    { icon: Camera, label: 'Webcam', path: '/' },
+    { icon: Settings, label: 'Settings', path: '/' },
   ];
 
   return (

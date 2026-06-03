@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AISMap from './components/AISMap';
 import Sidebar from './components/Sidebar';
 import RightSidebar from './components/RightSidebar';
-import WeatherPage from './pages/WeatherPage';
-import TidesPage from './pages/TidesPage';
 import { X, Info } from 'lucide-react';
 
 // Wrap AISMap to include the selection overlay and right sidebar
@@ -63,8 +61,6 @@ export default function App() {
         <main className="w-full h-full flex">
           <Routes>
             <Route path="/" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} />} />
-            <Route path="/weather" element={<WeatherPage />} />
-            <Route path="/tides" element={<TidesPage />} />
             {/* Fallbacks */}
             <Route path="*" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} />} />
           </Routes>

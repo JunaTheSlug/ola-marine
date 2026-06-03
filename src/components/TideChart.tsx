@@ -5,19 +5,20 @@ const TideChart = () => {
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    // Port Madison Station ID: 9447427
+    // Point Jefferson Station ID: 9445958 (Reliable harmonic predictions for Indianola area)
     const fetchTides = async () => {
       try {
-        const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=9447427&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&format=json`;
+        const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=9445958&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&format=json`;
         const res = await fetch(url);
         const json = await res.json();
+        if (json.error) throw new Error(json.error.message);
         const formatted = json.predictions.map((p: any) => ({
           time: p.t.split(' ')[1],
           v: parseFloat(p.v)
         })).filter((_: any, i: number) => i % 4 === 0); // Decimate for UI
         setData(formatted);
       } catch (e) {
-        console.error(e);
+        console.error('Tide fetch error:', e);
       }
     };
     fetchTides();
