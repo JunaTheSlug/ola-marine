@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AISMap from './components/AISMap';
-import Sidebar from './components/Sidebar';
 import RightSidebar from './components/RightSidebar';
 import { X, Info } from 'lucide-react';
 
@@ -52,7 +51,7 @@ const MapView = ({ selectedVessel, setSelectedVessel, activeCard, onToggleCard }
 
 export default function App() {
   const [selectedVessel, setSelectedVessel] = useState<any>(null);
-  const [activeCard, setActiveCard] = useState<string | null>('weather');
+  const [activeCard, setActiveCard] = useState<string | null>('tides');
 
   const toggleCard = (card: string) => {
     setActiveCard(prev => prev === card ? null : card);
@@ -61,7 +60,6 @@ export default function App() {
   return (
     <Router>
       <div className="relative w-full h-screen bg-maritime-950 overflow-hidden font-sans text-slate-200">
-        <Sidebar onToggleCard={toggleCard} activeCard={activeCard} />
         
         <main className="absolute inset-0 w-full h-full z-0">
           <Routes>
@@ -70,7 +68,7 @@ export default function App() {
           </Routes>
         </main>
 
-        <div className="fixed left-24 bottom-6 bg-maritime-900/80 backdrop-blur-md border border-slate-800/40 p-1 rounded-xl flex gap-1 z-[1500]">
+        <div className="fixed left-6 bottom-6 bg-maritime-900/80 backdrop-blur-md border border-slate-800/40 p-1 rounded-xl flex gap-1 z-[1500]">
           {['Standard', 'Satellite', 'Nautical'].map(layer => (
             <button key={layer} className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${layer === 'Standard' ? 'bg-cyan text-maritime-950' : 'text-slate-500 hover:text-white'}`}>
               {layer}
