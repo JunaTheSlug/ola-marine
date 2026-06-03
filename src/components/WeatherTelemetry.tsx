@@ -26,9 +26,10 @@ const WeatherTelemetry = () => {
         // Period 2 or 3 is usually tomorrow depending on time of day
         // We look for the first period that doesn't include "Today" or "Tonight" in the name, 
         // or just pick the next day-time period.
-        const tomorrow = forecastJson.properties.periods.find((p: any) => 
-          p.name.toLowerCase().includes('tomorrow') || p.name.toLowerCase().includes('monday') || p.name.toLowerCase().includes('tuesday') // simplify for now
-        ) || forecastJson.properties.periods[2];
+        const tomorrow = forecastJson.properties?.periods?.find((p: any) => 
+          p.name.toLowerCase().includes('tomorrow') || 
+          p.isDaytime === true && !p.name.toLowerCase().includes('today')
+        ) || forecastJson.properties?.periods?.[2];
         setForecast(tomorrow);
       } catch (e) {
         console.error('Weather fetch error:', e);

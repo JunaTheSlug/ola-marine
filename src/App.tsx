@@ -7,7 +7,7 @@ import { X, Info } from 'lucide-react';
 
 // Wrap AISMap to include the selection overlay and right sidebar
 const MapView = ({ selectedVessel, setSelectedVessel, activeCard, onToggleCard }: any) => (
-  <div className="w-full h-full relative">
+  <div className="w-full h-full relative border-none bg-transparent">
     <AISMap onSelectVessel={setSelectedVessel} />
     <RightSidebar activeCard={activeCard} onToggleCard={onToggleCard} />
     
