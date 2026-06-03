@@ -39,15 +39,15 @@ const ExpandableCard = ({ title, icon: Icon, id, children, activeCard, onToggle 
   );
 };
 
-const RightSidebar = ({ activeCard, setActiveCard }: any) => {
+const RightSidebar = ({ activeCard, onToggleCard }: any) => {
   return (
     <div className="fixed right-6 top-6 bottom-6 w-96 flex flex-col gap-4 pointer-events-none z-[1500] overflow-y-auto custom-scrollbar pr-1">
       
-      <ExpandableCard title="Weather Conditions" icon={Activity} id="weather" activeCard={activeCard} onToggle={setActiveCard}>
+      <ExpandableCard title="Weather Conditions" icon={Activity} id="weather" activeCard={activeCard} onToggle={onToggleCard}>
         <WeatherTelemetry />
       </ExpandableCard>
 
-      <ExpandableCard title="Tidal Forecast" icon={Waves} id="tides" activeCard={activeCard} onToggle={setActiveCard}>
+      <ExpandableCard title="Tidal Forecast" icon={Waves} id="tides" activeCard={activeCard} onToggle={onToggleCard}>
         <div className="h-48 pt-2">
           <div className="flex items-center justify-between mb-4">
             <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">MLLW Datum</span>
@@ -57,7 +57,7 @@ const RightSidebar = ({ activeCard, setActiveCard }: any) => {
         </div>
       </ExpandableCard>
 
-      <ExpandableCard title="WeatherOla Webcam" icon={Camera} id="webcam" activeCard={activeCard} onToggle={setActiveCard}>
+      <ExpandableCard title="WeatherOla Webcam" icon={Camera} id="webcam" activeCard={activeCard} onToggle={onToggleCard}>
         <div className="bg-maritime-950 rounded-xl overflow-hidden border border-slate-800/40 relative group aspect-video">
            <img 
              src="/assets/webcam_latest.jpg" 

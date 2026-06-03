@@ -6,10 +6,10 @@ import RightSidebar from './components/RightSidebar';
 import { X, Info } from 'lucide-react';
 
 // Wrap AISMap to include the selection overlay and right sidebar
-const MapView = ({ selectedVessel, setSelectedVessel, activeCard, setActiveCard }: any) => (
+const MapView = ({ selectedVessel, setSelectedVessel, activeCard, onToggleCard }: any) => (
   <div className="w-full h-full relative">
     <AISMap onSelectVessel={setSelectedVessel} />
-    <RightSidebar activeCard={activeCard} setActiveCard={setActiveCard} />
+    <RightSidebar activeCard={activeCard} onToggleCard={onToggleCard} />
     
     {selectedVessel && (
       <div className="fixed right-6 top-[550px] w-96 bg-maritime-900/95 backdrop-blur-xl border border-cyan/30 rounded-2xl p-6 shadow-[0_0_50px_rgba(0,242,255,0.15)] z-[2000] animate-in slide-in-from-right">
@@ -65,8 +65,8 @@ export default function App() {
         
         <main className="absolute inset-0 w-full h-full z-0">
           <Routes>
-            <Route path="/" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} activeCard={activeCard} setActiveCard={setActiveCard} />} />
-            <Route path="*" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} activeCard={activeCard} setActiveCard={setActiveCard} />} />
+            <Route path="/" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} activeCard={activeCard} onToggleCard={toggleCard} />} />
+            <Route path="*" element={<MapView selectedVessel={selectedVessel} setSelectedVessel={setSelectedVessel} activeCard={activeCard} onToggleCard={toggleCard} />} />
           </Routes>
         </main>
 
