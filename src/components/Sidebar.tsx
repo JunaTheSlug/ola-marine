@@ -1,4 +1,4 @@
-import { Anchor, Wind, Waves, Camera, Settings, Activity, Map as MapIcon } from 'lucide-react';
+import { Anchor, Wind, Waves, Camera, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { clsx, type ClassValue } from 'clsx';

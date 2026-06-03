@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, Camera, Activity } from 'lucide-react';
+import { ChevronDown, Waves, Camera, Activity } from 'lucide-react';
 import { useState } from 'react';
 import WeatherTelemetry from './WeatherTelemetry';
 import TideChart from './TideChart';
